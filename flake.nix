@@ -12,9 +12,7 @@
       pkgs = import nixpkgs {
         inherit system;
         overlays = [
-          (_: _: {
-            zigpkgs = zig.packages.${system};
-          })
+          zig.overlays.default
         ];
       };
     in with pkgs; {
