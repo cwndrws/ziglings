@@ -58,7 +58,7 @@ pub fn main() void {
     // To be mutable at runtime, these identifiers must refer to
     // areas of memory. In order to refer to areas of memory, Zig
     // must know exactly how much memory to reserve for these
-    // values. Therefore, it follows that we just specify numeric
+    // values. Therefore, it follows that we must specify numeric
     // types with specific sizes. The comptime numbers will be
     // coerced (if they'll fit!) into your chosen runtime types.
     // For this it is necessary to specify a size, e.g. 32 bit.
