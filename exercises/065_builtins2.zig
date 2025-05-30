@@ -21,7 +21,7 @@
 //
 // 1. @This() type
 //
-// Returns the innermost struct, enum, or union that a function
+// Returns the innermost struct, enum, or union that this function
 // call is inside.
 //
 // 2. @typeInfo(comptime T: type) @import("std").builtin.Type
