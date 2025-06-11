@@ -1,23 +1,32 @@
 {
   description = "dev shell environment for ziglings";
-  inputs = {};
-  outputs = { self, ... }: {
-    devShell.x86_64-linux = pkgs.mkShell {
-      buildInputs = [ pkgs.zig ];
-      # Use the user's default shell
-      shellHook = ''
-        # Get the user's default shell from /etc/passwd
-        user_shell="$(awk -F: -v user="$(whoami)" '$1 == user {print $NF}' /etc/passwd)"
-
-        # Check if the shell is interactive
-        if [[ $- == *i* ]]; then
-          echo "Starting user's default shell: $user_shell"
-          exec "$user_shell"
-        else
-          echo "Non-interactive shell detected. Using default nix-shell."
-        fi
-      '';
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    flake-utils.url = "github:numtide/flake-utils";
+    usershell.url = "github:cwndrws/usershell";
+    zig-overlay = {
+      url = "github:mitchellh/zig-overlay";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        flake-utils.follows = "flake-utils";
+      };
     };
   };
+  outputs = { self, nixpkgs, flake-utils, usershell, zig-overlay, ... }:
+    flake-utils.lib.eachDefaultSystem
+      (system:
+        let
+          pkgs = import nixpkgs {
+            inherit system;
+          };
+          zig-nightly = zig-overlay.packages.${system}.master;
+        in
+        {
+          devShells.default = usershell.lib.mkUserShell {
+            inherit pkgs;
+            buildInputs = [ zig-nightly ];
+          };
+        }
+      );
 }
 
