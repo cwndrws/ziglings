@@ -12,9 +12,11 @@ const NumError = error{IllegalNumber};
 pub fn main() void {
     const stdout = std.io.getStdOut().writer();
 
-    const my_num: u32 = getNumber();
+    const my_num: u32 = getNumber() catch 42;
 
-    try stdout.print("my_num={}\n", .{my_num});
+    stdout.print("my_num={}\n", .{my_num}) catch |err| {
+        std.debug.print("Failed to print to stdout with: {}", .{err});
+    };
 }
 
 // This function is obviously weird and non-functional. But you will not be changing it for this quiz.
