@@ -35,7 +35,11 @@ pub fn main() void {
     // at compile time.
     //
     // Please fix this to loop once per "instruction":
-    ??? (i < instructions.len) : (???) {
+    inline while (i < instructions.len) {
+        if (instructions[i] == ' ') {
+            i += 1;
+            continue;
+        }
 
         // This gets the digit from the "instruction". Can you
         // figure out why we subtract '0' from it?
@@ -60,6 +64,7 @@ pub fn main() void {
         // the instructions contained in a string into runtime
         // code at compile time. Guess we're compiler writers
         // now. See? The wizard hat was justified after all.
+        i += 3;
     }
 
     print("{}\n", .{value});
